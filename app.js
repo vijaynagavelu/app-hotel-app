@@ -730,7 +730,7 @@ function renderAllPages() {
             scrollEvent()
             break;
         }
-        case '/viewCart.html': { // dishes page route
+        case '/viewCart.html': { // dishess page route
             renderCart()
             break;
         }
