@@ -760,8 +760,10 @@ function renderHotels() {
 
     searchhotel[0].addEventListener('keyup', renderHotels)
 
-    const restaurantId = selectedItems.hotelId;
-    hotelnamedisplay[0].textContent = `${hotels[restaurantId].hotelName}`;
+    if (selectedItems) {
+        const restaurantId = selectedItems.hotelId;
+        hotelnamedisplay[0].textContent = `${hotels[restaurantId].hotelName}`;
+    }
 
     const displayHotels = document.querySelector('.display');
 
@@ -1186,12 +1188,15 @@ function yesCommand() {
 
 function viewCartDisplay() {
 
-    for (var i = 0; i < selectedItems.food.length; i++) {
-        amt = selectedItems.food[i].quantity * selectedItems.food[i].price
-        c = amt + c;
+
+    if (selectedItems && selectedItems.food.length) {
+        for (var i = 0; i < selectedItems.food.length; i++) {
+            amount = selectedItems.food[i].quantity * selectedItems.food[i].price
+            c = amount + c;
+        }
     }
 
-    if (selectedItems.food.length >= 1) {
+    if (selectedItems && selectedItems.food.length >= 1) {
         setTimeout(() => {
             viewCartPopupDisplay.style.transform = "translateY(" + (0) + "px)";
         }, '300')
@@ -1205,7 +1210,7 @@ function viewCartDisplay() {
         }, '700')
     }
 
-    if (selectedItems.food.length === 0) {
+    if (selectedItems && selectedItems.food.length === 0) {
         setTimeout(() => {
             viewCartPopupDisplay.style.transform = "translateY(" + (70) + "px)";
         }, '80')
