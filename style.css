@@ -1,0 +1,592 @@
+body {
+    margin: 0;
+    background-color: rgba(42, 39, 39, 0.941);
+    background-image: repeating-linear-gradient(to right, lightblue -50%, white 50%, lightblue 100%);
+    font-family: ProximaNova, arial, Helvetica Neue, sans-serif;
+    padding-top: 60px;
+}
+
+.noMargin {
+    margin: 0px;
+}
+
+.marginTop {
+    margin-top: 10px;
+}
+
+.margin2px {
+    margin: 2px;
+}
+
+.fontMedium {
+    font-size: 16px;
+}
+
+.fontSmall {
+    font-size: 13px;
+    margin: 4px 0px;
+}
+
+.fontExtraSmall {
+    font-size: 12px;
+}
+
+.fontBold {
+    font-weight: 700;
+}
+
+.row {
+    display: flex;
+    gap: 10px;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.greenText {
+    color: green;
+}
+
+.greyText {
+    color: rgb(157, 155, 155);
+}
+
+.blueText {
+    color: blue
+}
+
+.whiteText {
+    color: rgb(255, 255, 255)
+}
+
+.textRight {
+    text-align: right;
+}
+
+.displayNone {
+    display: none;
+}
+
+.mainPage {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 60px;
+}
+
+
+.header {
+    font-family: "ProximaNovaExtraBold", arial, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #3d4152;
+}
+
+.mealDisplay {
+    font-family: "ProximaNovaExtraBold", arial, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    color: #3d4152;
+}
+
+.dishes img {
+    object-fit: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.dishes p {
+    margin: 0;
+    padding: 0px 0px;
+}
+
+.dishes {
+    display: flex;
+    padding: 18px 0px;
+    align-items: center;
+    font-size: 15px;
+}
+
+.dishesContent {
+    padding-left: 18px;
+    line-height: 22px;
+    margin-top: 2px;
+}
+
+.rating {
+    font-size: 13px;
+    color: #696b79;
+    font-weight: bold;
+}
+
+.foodTypes {
+    font-size: 14px;
+    color: #93959f;
+}
+
+.rating * {
+    padding-right: 10px;
+}
+
+.replaceItems {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    display: none;
+    z-index: 1;
+}
+
+.dummy {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 83%;
+    transition: all 0.5s;
+    opacity: 0;
+}
+
+.replaceItemsDisplay {
+    transition: transform 0.5s;
+    transform: translateY(200px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 150px;
+    border-bottom: 1px solid rgb(202, 190, 190);
+    background-color: white;
+    padding-left: 15px;
+}
+
+.replaceItemsContent {
+    font-weight: 500;
+    margin: 10px;
+    opacity: 0.7;
+}
+
+.replaceItemsOption {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    font-weight: 600;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 0px;
+    padding-right: 15px;
+    font-size: small;
+}
+
+.replaceItemsOption :first-child {
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    align-items: center;
+    color: rgb(97, 97, 176);
+    border: 1px solid rgb(51, 0, 255);
+    background-color: white;
+    min-height: 35px;
+    max-width: 160px;
+}
+
+.replaceItemsOption :last-child {
+    display: flex;
+    flex: 1;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: rgb(97, 97, 176);
+    border: 1px solid rgb(51, 0, 255);
+    color: white;
+    min-height: 35px;
+    max-width: 160px;
+}
+
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.navSub {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    border-bottom: 1px solid rgb(202, 190, 190);
+    background-color: white;
+    padding-left: 15px;
+}
+
+.locationNav {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.locationNav :first-child {
+    font-size: 17px;
+    color: rgb(79, 74, 74);
+    font-family: "ProximaNovaExtraBold", arial, "Helvetica Neue", sans-serif;
+    font-weight: 800;
+}
+
+.locationNav :last-child {
+    font-size: 13px;
+    font-weight: 400;
+    color: #93959f;
+}
+
+.offersNav {
+    font-weight: 600;
+    margin: 10px;
+    opacity: 0.8;
+}
+
+.subDishes {
+    display: flex;
+    padding: 18px 0px;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    border-bottom: 1px solid black;
+}
+
+.subDishesContent {
+    padding-left: 18px;
+    line-height: 22px;
+    margin-top: 2px;
+}
+
+.subDishes img {
+    object-fit: cover;
+    width: 120px;
+    height: 90px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.subDishes p {
+    margin: 0;
+    padding: 0px 0px;
+    font-size: 16px;
+}
+
+.add img {
+    position: absolute;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    margin-top: -30px;
+    margin-right: 50px;
+    right: 0;
+}
+
+.add {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    position: absolute;
+    object-fit: cover;
+    width: 90px;
+    height: 30px;
+    border-radius: 6px;
+    margin-top: -20px;
+    margin-right: 30px;
+    right: 0;
+    color: #60b246;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.noOfItems {
+    flex: 1;
+}
+
+.add * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+}
+
+.addItem {
+    /* color: #60b246; */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    display: none;
+}
+
+.deleteItem {
+    /* color: #60b246; */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    display: none;
+}
+
+.enableAddDelete {
+    color: #60b246;
+    display: flex;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+a.enabled {
+    color: black;
+    pointer-events: cursor;
+}
+
+a.disabled {
+    color: gray;
+    pointer-events: none;
+}
+
+.subDishesContent .veg {
+    width: 20px;
+    height: 20px;
+    border-radius: 0px;
+}
+
+.leftArrow {
+    font-size: 28px;
+    color: #5f6068;
+}
+
+.searchEmoji {
+    padding-right: 15px;
+}
+
+.noBackground .navSub {
+    background-image: repeating-linear-gradient(to right, lightblue -50%, white 50%, lightblue 100%);
+    border: none;
+    width: 96%;
+}
+
+.subViewCart .veg {
+    width: 12px;
+    height: 13px;
+    border-radius: 0px;
+    margin: 0px 10px;
+}
+
+.subViewCart {
+    display: flex;
+    align-items: center;
+    border-left: 3.5px solid lightskyblue;
+}
+
+.viewCart {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    justify-content: space-between;
+    background-color: white;
+    padding: 0px 20px;
+}
+
+.addCart {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: white;
+    position: absolute;
+    object-fit: cover;
+    width: 70px;
+    height: 20px;
+    margin-top: -10px;
+    margin-right: 60px;
+    right: 0;
+    color: #60b246;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.addCart * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+}
+
+.displayCart {
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 10px 0px;
+}
+
+.spaceBetween {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    padding: 10px 0px;
+    align-items: flex-start;
+}
+
+.billDetails {
+    padding: 20px 20px;
+    background-color: white;
+    font-size: 13px;
+    margin-bottom: 80px;
+}
+
+.bottomBorder {
+    border-bottom: 2px solid gainsboro;
+}
+
+.payButton {
+    width: 350px;
+    padding: 10px 0px;
+    background-color: rgb(97, 97, 176);
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+    margin-top: 0px;
+}
+
+.welcomeCode {
+    padding: 0px 20px;
+    background-color: white;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.tip {
+    padding: 0px 20px;
+    background-color: white;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.tipAmount {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-bottom: 20px;
+}
+
+.tips {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 50px;
+    height: 30px;
+    border: 2px solid rgb(97, 97, 176);
+    border-radius: 5px;
+}
+
+.pay {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 80px;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.viewCartPopUpContent * {
+    padding: 0px 3px;
+}
+
+.viewCartPopUpContent {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    font-weight: 600;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0px;
+    color: white;
+}
+
+.viewCartPopUpDisplay {
+    transition: transform 0.5s;
+    transform: translateY(70px);
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    height: 40px;
+    background-color: rgb(106, 97, 181);
+    padding: 7px 8px;
+}
+
+.viewCartPopUp {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 54px;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    font-size: 14px;
+    z-index: 0;
+}
+
+.viewCartPopUpDisplay.hotelPage {
+    background-image: repeating-linear-gradient(to right, lightblue -50%, white 50%, lightblue 100%);
+    display: flex;
+    align-items: center;
+}
+
+.viewCartPopUp.hotelPage {
+    height: 72px;
+    /* box-shadow: 0px 0px 10px 0.1px rgb(36, 28, 28); */
+}
+
+.CheckoutButton {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: rgb(106, 97, 181);
+    padding: 1px 20px;
+    border-radius: 9px;
+    flex-basis: 30%;
+    height: 48px;
+}
+
+.viewFullMenu {
+    color: rgb(24, 22, 22);
+    display: flex;
+    flex-basis: 70%;
+    gap: 10px;
+    align-items: center;
+}
+
+.viewFullMenu img {
+    width: 40px;
+    height: 40px;
+}
+
+.searchHotel {
+    font-size: 16px;
+    display: none;
+    border: 0px solid black;
+    outline: none;
+    box-sizing: border-box;
+    margin: 5px 0px 1px 0px;
+    background-color: transparent;
+    height: 30px;
+    width: 290px;
+}

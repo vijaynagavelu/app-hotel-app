@@ -1,0 +1,14 @@
+//  add button clicked
+// if isPresentInCart(item)
+// increment item quantity
+// increment item totalAmount
+// else
+// array.push the item
+
+
+//  delete button clicked
+// if (item > 1)
+// decrement item quantity
+// decrement item totalAmount
+// else
+// array.splice the item

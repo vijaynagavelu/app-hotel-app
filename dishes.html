@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="mainPage">
+        <div class="nav noBackground ">
+            <div class="navSub">
+                <div class="row fontBold fontSmall">
+
+                    <a href="http://127.0.0.1:5501/index.html" class="leftArrow"> 🡐 </a>
+
+                    <div class="column smallHeader displayNone">
+                        <span class="hotelNameDisplay">SS Hyderabad</span>
+                        <span class="greyText">27 mins</span>
+                    </div>
+
+                    <input placeholder=" Search" class="searchHotel">
+
+                </div>
+
+                <div class="searchEmoji" onclick="displaySearch()">🔍</div>
+            </div>
+        </div>
+
+        <h2 class="header"></h2>
+        <p>All varieties of Briyani</p>
+
+        <div class="displaySubDishes"></div>
+
+        <div class="replaceItems">
+            <div class="dummy">
+            </div>
+            <div class="replaceItemsDisplay">
+                <div class="replaceItemsContent">
+                    <h4 class="noMargin">Replace items in the cart already</h4>
+                    <div class="marginTop fontSmall">Your cart contains dishes from Krishna's Dosa Kadai.
+                        Do you want to discard the selection and add
+                        dishes from Hotel Aishwarya?</div>
+                </div>
+                <div class="replaceItemsOption">
+                    <div onclick="noCommand()">NO</div>
+                    <div onclick="yesCommand()">YES</div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="viewCartPopUp">
+            <div class="viewCartPopUpDisplay">
+                <a href="http://127.0.0.1:5501/viewCart.html" class="viewCartPopUpContent">
+                    <div>
+                        <span class="noMargin itemsNumber">1</span> | <span class="noMargin totalAmount">500</span>
+                    </div>
+                    <div class="fontBold fontSmall">VIEW CART 👜 </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+<script src="app.js"></script>
+
+</html>
