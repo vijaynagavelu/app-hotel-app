@@ -139,7 +139,7 @@ const hotels = [
     {
         name: 'Hotel Aiswaraya',
         rating: '2.2',
-        openingTime: '12:30',
+        openingTime: '07:30',
         closingTime: '23:50',
         image: "https://images.livemint.com/img/2021/07/05/1200x900/crispy-dosa-temple-recipe_1625469413436_1625469443302.jpg",
         address: 'AnnaNagar',
@@ -683,7 +683,7 @@ let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || null;
 let tempStorage = null;
 
 const headerText = document.querySelector('.header');
-const hotelnamedisplay = document.querySelectorAll('.nameDisplay');
+const hotelnamedisplay = document.querySelectorAll('.hotelNameDisplay');
 const mealDisplayText = document.querySelector('.mealDisplay');
 const blackbg = document.querySelector('.dummy');
 const replaceDisplay = document.querySelector('.replaceItems');
@@ -697,8 +697,8 @@ const itemsnumber = document.querySelector('.itemsNumber');
 const totalamount = document.querySelector('.totalAmount');
 const viewfullmenu = document.querySelector('.viewFullMenu');
 const leftarrow = document.querySelector('.leftArrow');
-const searchhotel = document.querySelectorAll('.searchHotel');
-const smallHeader = document.querySelectorAll('.smallHeader');
+const search = document.querySelectorAll('.search');
+const topHeader = document.querySelectorAll('.topHeader');
 
 const viewCartPopupDisplay = document.querySelector('.viewCartPopUpDisplay');
 const viewCartPopup = document.querySelector('.viewCartPopUp');
@@ -714,24 +714,26 @@ function renderAllPages() {
     switch (pathName) {
         case '/': { // hotels page route
             renderHotels()
-            renderSelection()
+            meal();
             viewCartDisplay()
+            viewfullmenu.addEventListener('click', viewFullMenu);
             break;
         }
         case '/index.html': { // dishes page route
             renderHotels()
-            renderSelection()
+            meal();
             viewCartDisplay()
+            viewfullmenu.addEventListener('click', viewFullMenu);
             break;
         }
         case '/dishes.html': { // dishes page route
             renderMenu()
             viewCartDisplay()
-            scrollEvent()
             break;
         }
         case '/viewCart.html': { // dishes page route
             renderCart()
+            leftarrow.addEventListener('click', viewFullMenu);
             break;
         }
         default:
@@ -739,25 +741,16 @@ function renderAllPages() {
     }
 }
 
-function findMatchesHotel(hotelToMatch, hotels) {
-
-    return hotels.filter(hotel => {
-        const regex = new RegExp(hotelToMatch, 'gi'); // i insensitive
-        return hotel.name.match(regex)
-    })
-}
-
-function findMatchesMenu(menuToMatch, menus) {
-
-    return menus.filter(menu => {
-        const regex = new RegExp(menuToMatch, 'gi');
-        return menu.name.match(regex)
+function findMatches(inputToMatch, lists) {
+    return lists.filter(hotelOrMenu => {
+        const regex = new RegExp(inputToMatch, 'gi'); // i insensitive
+        return hotelOrMenu.name.match(regex)
     })
 }
 
 function renderHotels() {
 
-    searchhotel[0].addEventListener('keyup', renderHotels)
+    search[0].addEventListener('keyup', renderHotels)
 
     if (selectedItems) {
         const restaurantId = selectedItems.hotelId;
@@ -766,7 +759,7 @@ function renderHotels() {
 
     const displayHotels = document.querySelector('.display');
 
-    const matchArray = findMatchesHotel(this.value, hotels)
+    const matchArray = findMatches(this.value, hotels)
 
     displayHotels.innerHTML = matchArray.map(function (item, i) {
         // displayHotels.innerHTML = hotels.map(function (item, i) {
@@ -788,15 +781,28 @@ function renderHotels() {
         `)
     }).join('')
 
-    viewfullmenu.addEventListener('click', viewFullMenu);
+
+    function isRestaurantDisabled(restaurantId) {
+
+        function timeConversion(timing) {
+            return timing.split(':').join('');
+        }
+
+        const time = new Date();
+        var currtime = time.getHours() * 100 + time.getMinutes();
+        if (timeConversion(hotels[restaurantId].openingTime) <= currtime && timeConversion(hotels[restaurantId].closingTime) >= currtime)
+            return true;
+
+    }
 }
 
 function renderMenu() {
 
-    searchhotel[0].addEventListener('keyup', renderMenu);
+    search[0].addEventListener('keyup', renderMenu);
 
     const restaurantId = getRestaurantId();
     const displayHotelMenu = document.querySelector('.displaySubDishes')
+
     headerText.textContent = `${hotels[restaurantId].name}`;
     hotelnamedisplay[0].textContent = `${hotels[restaurantId].name}`;
 
@@ -807,7 +813,7 @@ function renderMenu() {
     const menu = [...hotels[restaurantId].food[meal()]];
     const nameofhotel = hotels[restaurantId].name;
 
-    const matchArray = findMatchesMenu(this.value, menu)
+    const matchArray = findMatches(this.value, menu)
 
     displayHotelMenu.innerHTML = matchArray.map(function (item, i) {
         // displayHotelMenu.innerHTML = menu.map(function (item, i) {
@@ -834,6 +840,7 @@ function renderMenu() {
                  data-img="${item.image}" 
                  data-price="${item.price}"
                  data-quantity ="${item.quantity}"
+                 data-restaurantid="${getRestaurantId()}"
                  class= "noOfItems" >${checkCart(nameofhotel, item.name)} </div> 
 
                  <div class="addItem ${(checkCart(nameofhotel, item.name)) > 0 ? " enableAddDelete" : ""}" "
@@ -844,6 +851,7 @@ function renderMenu() {
                 </div>`
         )
     }).join('');
+
 
     const noOfItem = document.querySelectorAll('.noOfItems');
     noOfItem.forEach((item) => {
@@ -859,35 +867,48 @@ function renderMenu() {
     deleteCount.forEach((item) => {
         item.addEventListener('click', deleteItem)
     })
+
+    window.addEventListener("scroll", () => {
+        let scroll = this.scrollY;
+        //console.log(scroll)
+        if (scroll < 4 && scroll < 80) {
+            //console.log("loop")
+            topHeader[0].style.display = "none"
+        } else
+            topHeader[0].style.display = "flex"
+    });
+
+    function getRestaurantId() {
+        const queryParameters = window.location.search;
+        if (queryParameters.length <= 0) {
+            return null;
+        }
+        if (!queryParameters.includes('restaurant_id')) {
+            return null;
+        }
+        // query parameters is present
+        // query parameters restaurant_id in it
+        return parseInt(queryParameters.split('restaurant_id=')[1]);
+    }
 }
 
 function displaySearch() {
     switch (pathName) {
-        case '/': { // hotels page route
-            smallHeader[0].style.display = "none"
-            smallHeader[1].style.display = "none"
-            setTimeout(() => {
-                searchhotel[0].style.display = "flex"
-            }, '10')
-            break;
-        }
-        case '/index.html': { // dishes page route
-            smallHeader[0].style.display = "none"
-            smallHeader[1].style.display = "none"
-            setTimeout(() => {
-                searchhotel[0].style.display = "flex"
-            }, '10')
-            break;
-        }
         case '/dishes.html': { // dishes page route
-            smallHeader[0].style.display = "none"
+            topHeader[0].style.display = "none"
             setTimeout(() => {
-                searchhotel[0].style.display = "flex"
+                search[0].style.display = "flex"
             }, '10')
             break;
         }
-        default:
+        default: {             // hotels page route
+            topHeader[0].style.display = "none"
+            topHeader[1].style.display = "none"
+            setTimeout(() => {
+                search[0].style.display = "flex"
+            }, '10')
             break;
+        }
     }
     console.log("no");
 }
@@ -915,6 +936,7 @@ function viewFullMenu() {
 }
 
 function renderCart() {
+
     const displaycart = document.querySelector('.displayCart');
     const nameofhotel = selectedItems.name;
 
@@ -970,28 +992,14 @@ function renderCart() {
 
     console.log(selectedItems);
 
-    leftarrow.addEventListener('click', viewFullMenu);
-}
-
-function addTotal(itemPrice) {
-    b = b + itemPrice;
-    itemTotal.textContent = `₹${b}`;
-    withTaxes.textContent = `₹${(b * 0.09).toFixed(2)}`;
-    toPay.textContent = `₹${(b + (b * 0.09)).toFixed(2)}`;
-    youSave.textContent = `₹${80}`
-}
-
-function getRestaurantId() {
-    const queryParameters = window.location.search;
-    if (queryParameters.length <= 0) {
-        return null;
+    function addTotal(itemPrice) {
+        b = b + itemPrice;
+        itemTotal.textContent = `₹${b}`;
+        withTaxes.textContent = `₹${(b * 0.09).toFixed(2)}`;
+        toPay.textContent = `₹${(b + (b * 0.09)).toFixed(2)}`;
+        youSave.textContent = `₹${80}`
     }
-    if (!queryParameters.includes('restaurant_id')) {
-        return null;
-    }
-    // query parameters is present
-    // query parameters restaurant_id in it
-    return parseInt(queryParameters.split('restaurant_id=')[1]);
+
 }
 
 function meal() {
@@ -999,45 +1007,24 @@ function meal() {
     var currtime = time.getHours() * 100 + time.getMinutes();
 
     if (currtime > 0630 && currtime < 1200) {
+        if (mealDisplayText) {
+            mealDisplayText.textContent = `Its BreakFast Time`;
+        }
         return 'breakFast';
     } else if
         (currtime > 1200 && currtime < 1600) {
+        if (mealDisplayText) {
+            mealDisplayText.textContent = `Its lunch Time`;
+        }
         return 'lunch';
     } else if
-        // (currtime > 1600 && currtime < 2330) {
-        (currtime > 0000 && currtime < 2359) {
+        (currtime > 1600 && currtime < 2359) {
+        if (mealDisplayText) {
+            mealDisplayText.textContent = `Its Dinner Time`;
+        }
         return 'dinner';
     } else {
-        return 'breakFast';
-    }
-}
-
-function isRestaurantDisabled(restaurantId) {
-    const time = new Date();
-    var currtime = time.getHours() * 100 + time.getMinutes();
-    if (timeConversion(hotels[restaurantId].openingTime) <= currtime && timeConversion(hotels[restaurantId].closingTime) >= currtime)
-        return true;
-}
-
-function timeConversion(timing) {
-    const time = timing.split(':').join('');
-    return time;
-}
-
-function renderSelection() {
-    const time = new Date();
-    var currtime = time.getHours() * 100 + time.getMinutes();
-
-    if (currtime > 0630 && currtime < 1200) {
-        mealDisplayText.textContent = `Its BreakFast Time`;
-    } else if
-        (currtime > 1200 && currtime < 1600) {
-        mealDisplayText.textContent = `Its lunch Time`;
-    } else if
-        (currtime > 1600 && currtime < 2330) {
-        mealDisplayText.textContent = `Its Dinner Time`;
-    } else {
-        return;
+        return 'lunch';
     }
 }
 
@@ -1093,7 +1080,7 @@ function addItem() {
 function addToCart(e) {
     tempStorage = {
         name: this.dataset.nameofhotel,
-        hotelId: getRestaurantId(),
+        hotelId: this.dataset.restaurantid,
         food: [{
             quantity: 1,
             name: this.dataset.name,
@@ -1107,7 +1094,7 @@ function addToCart(e) {
         console.log('print')
         selectedItems = {
             name: this.dataset.nameofhotel,
-            hotelId: getRestaurantId(),
+            hotelId: this.dataset.restaurantid,
             food: [{
                 name: this.dataset.name,
                 price: parseInt(this.dataset.price),
@@ -1158,31 +1145,33 @@ function addToCart(e) {
     renderAllPages()
 }
 
-function noCommand() {
-    console.log("no");
-    setTimeout(() => {
-        replaceBottom.style.transform = "translateY(" + (200) + "px)";
-    }, '200')
-    setTimeout(() => {
+function yesOrNo(yn) {
+    if (yn === "yes") {
+        console.log("yes");
         blackbg.style.opacity = '0';
-    }, '50')
-    setTimeout(() => {
         replaceDisplay.style.display = 'none'
-    }, '400')
-}
+        selectedItems = null;
 
-function yesCommand() {
-    console.log("yes");
-    blackbg.style.opacity = '0';
-    replaceDisplay.style.display = 'none'
-    selectedItems = null;
+        selectedItems = tempStorage;
+        localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
 
-    selectedItems = tempStorage;
-    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+        console.log("temp storage", tempStorage)
+        tempStorage = null;
+        renderAllPages()
+    }
+    else {
+        console.log("no");
+        setTimeout(() => {
+            replaceBottom.style.transform = "translateY(" + (200) + "px)";
+        }, '200')
+        setTimeout(() => {
+            blackbg.style.opacity = '0';
+        }, '50')
+        setTimeout(() => {
+            replaceDisplay.style.display = 'none'
+        }, '400')
+    }
 
-    console.log("temp storage", tempStorage)
-    tempStorage = null;
-    renderAllPages()
 }
 
 function viewCartDisplay() {
@@ -1220,25 +1209,14 @@ function viewCartDisplay() {
     }
 }
 
-function scrollEvent() {
-    window.addEventListener("scroll", (event) => {
-        let scroll = this.scrollY;
-        console.log(scroll)
-        if (scroll < 4) {
-            console.log("loop")
-            smallHeader[0].style.display = "none"
-            renderAllPages()
-        }
-        if (scroll > 80) {
-            smallHeader[0].style.display = "flex"
-            renderAllPages()
-        }
-    });
-}
-
-
-
 //search // restaurant search main page //food search menu page
 //payment process
 //back api ?
-//review 
+//review
+
+
+//smallHeader to topHeader
+//serachHotel to search
+
+//22 to 
+
