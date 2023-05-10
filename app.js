@@ -1,8 +1,8 @@
 const hotels = [
     {
-        hotelName: 'SS Hyderabad',
+        name: 'SS Hyderabad',
         rating: '1.1',
-        openingTime: '12:00',
+        openingTime: '06:00',
         closingTime: '23:00',
         image: "https://img.freepik.com/premium-photo/mutton-biryani-food-photography_162831-2.jpg?w=2000",
         address: 'Padi',
@@ -137,7 +137,7 @@ const hotels = [
         }
     },
     {
-        hotelName: 'Hotel Aiswaraya',
+        name: 'Hotel Aiswaraya',
         rating: '2.2',
         openingTime: '12:30',
         closingTime: '23:50',
@@ -267,7 +267,7 @@ const hotels = [
         }
     },
     {
-        hotelName: 'Hotel Pandian',
+        name: 'Hotel Pandian',
         rating: '3.3',
         openingTime: '13:00',
         closingTime: '23:30',
@@ -404,7 +404,7 @@ const hotels = [
         }
     },
     {
-        hotelName: 'Anchor',
+        name: 'Anchor',
         rating: '4.4',
         openingTime: "13:30",
         closingTime: '22:00',
@@ -541,7 +541,7 @@ const hotels = [
         }
     },
     {
-        hotelName: 'The Creams',
+        name: 'The Creams',
         rating: '5.5',
         openingTime: '13:30',
         closingTime: '23:00',
@@ -683,7 +683,7 @@ let selectedItems = JSON.parse(localStorage.getItem('selectedItems')) || null;
 let tempStorage = null;
 
 const headerText = document.querySelector('.header');
-const hotelnamedisplay = document.querySelectorAll('.hotelNameDisplay');
+const hotelnamedisplay = document.querySelectorAll('.nameDisplay');
 const mealDisplayText = document.querySelector('.mealDisplay');
 const blackbg = document.querySelector('.dummy');
 const replaceDisplay = document.querySelector('.replaceItems');
@@ -742,9 +742,8 @@ function renderAllPages() {
 function findMatchesHotel(hotelToMatch, hotels) {
 
     return hotels.filter(hotel => {
-
         const regex = new RegExp(hotelToMatch, 'gi'); // i insensitive
-        return hotel.hotelName.match(regex)
+        return hotel.name.match(regex)
     })
 }
 
@@ -762,7 +761,7 @@ function renderHotels() {
 
     if (selectedItems) {
         const restaurantId = selectedItems.hotelId;
-        hotelnamedisplay[0].textContent = `${hotels[restaurantId].hotelName}`;
+        hotelnamedisplay[0].textContent = `${hotels[restaurantId].name}`;
     }
 
     const displayHotels = document.querySelector('.display');
@@ -776,7 +775,7 @@ function renderHotels() {
         <div class="dishes">
             <div> <img src="${item.image}"></div>
             <div class="dishesContent">
-            <p style="font-weight:bold;">${item.hotelName}</p>
+            <p style="font-weight:bold;">${item.name}</p>
             <p class="rating">
             <span>✭ 4.3</span>
             <span>30mins</span>
@@ -798,15 +797,15 @@ function renderMenu() {
 
     const restaurantId = getRestaurantId();
     const displayHotelMenu = document.querySelector('.displaySubDishes')
-    headerText.textContent = `${hotels[restaurantId].hotelName}`;
-    hotelnamedisplay[0].textContent = `${hotels[restaurantId].hotelName}`;
+    headerText.textContent = `${hotels[restaurantId].name}`;
+    hotelnamedisplay[0].textContent = `${hotels[restaurantId].name}`;
 
     if (restaurantId === null) {
         return;
     }
 
     const menu = [...hotels[restaurantId].food[meal()]];
-    const nameofhotel = hotels[restaurantId].hotelName;
+    const nameofhotel = hotels[restaurantId].name;
 
     const matchArray = findMatchesMenu(this.value, menu)
 
@@ -894,7 +893,7 @@ function displaySearch() {
 }
 
 function checkCart(hotel, name) {
-    if (selectedItems && selectedItems.hotelName === hotel && checkItem(name)) {
+    if (selectedItems && selectedItems.name === hotel && checkItem(name)) {
         for (let i = 0; i < selectedItems.food.length; i++) {
             if (selectedItems.food[i].name === name) {
                 if (selectedItems.food[i].quantity === 0) {
@@ -917,7 +916,7 @@ function viewFullMenu() {
 
 function renderCart() {
     const displaycart = document.querySelector('.displayCart');
-    const nameofhotel = selectedItems.hotelName;
+    const nameofhotel = selectedItems.name;
 
     displaycart.innerHTML = selectedItems.food.map(function (item, i) {
         return (`
@@ -1006,7 +1005,7 @@ function meal() {
         return 'lunch';
     } else if
         // (currtime > 1600 && currtime < 2330) {
-        (currtime > 0000 && currtime < 2358) {
+        (currtime > 0000 && currtime < 2359) {
         return 'dinner';
     } else {
         return 'breakFast';
@@ -1052,7 +1051,7 @@ function checkItem(name) {
 
 function deleteItem(e) {
 
-    if (selectedItems.hotelName === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
+    if (selectedItems.name === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
         for (let i = 0; i < selectedItems.food.length; i++) {
             if (selectedItems.food[i].name === this.dataset.name && selectedItems.food[i].quantity > 0) {
 
@@ -1078,7 +1077,7 @@ function deleteItem(e) {
 }
 
 function addItem() {
-    if (selectedItems.hotelName === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
+    if (selectedItems.name === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
         for (let i = 0; i < selectedItems.food.length; i++) {
             if (selectedItems.food[i].name === this.dataset.name && selectedItems.food[i].quantity > 0) {
                 selectedItems.food[i].quantity = selectedItems.food[i].quantity + 1;
@@ -1093,7 +1092,7 @@ function addItem() {
 
 function addToCart(e) {
     tempStorage = {
-        hotelName: this.dataset.nameofhotel,
+        name: this.dataset.nameofhotel,
         hotelId: getRestaurantId(),
         food: [{
             quantity: 1,
@@ -1107,7 +1106,7 @@ function addToCart(e) {
     if (!selectedItems) {
         console.log('print')
         selectedItems = {
-            hotelName: this.dataset.nameofhotel,
+            name: this.dataset.nameofhotel,
             hotelId: getRestaurantId(),
             food: [{
                 name: this.dataset.name,
@@ -1122,7 +1121,7 @@ function addToCart(e) {
     }
 
     if (selectedItems) {
-        if (selectedItems.hotelName !== this.dataset.nameofhotel) {
+        if (selectedItems.name !== this.dataset.nameofhotel) {
             console.log("sorry");
             replaceDisplay.style.display = 'flex';
             setTimeout(() => {
@@ -1134,8 +1133,8 @@ function addToCart(e) {
         }
     }
 
-    if (selectedItems.hotelName === this.dataset.nameofhotel) {
-        if (selectedItems.hotelName === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
+    if (selectedItems.name === this.dataset.nameofhotel) {
+        if (selectedItems.name === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
             for (let i = 0; i < selectedItems.food.length; i++) {
                 if (selectedItems.food[i].name === this.dataset.name && selectedItems.food[i].quantity === "ADD") {
                     selectedItems.food[i].quantity = 1;
