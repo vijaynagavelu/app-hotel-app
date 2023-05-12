@@ -572,6 +572,7 @@ a.disabled {
     flex-basis: 70%;
     gap: 10px;
     align-items: center;
+    font-size: 28px;
 }
 
 .viewFullMenu img {
