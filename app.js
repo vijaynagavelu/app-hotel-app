@@ -2,8 +2,8 @@ const hotels = [
     {
         name: 'SS Hyderabad',
         rating: '1.1',
-        openingTime: '06:00',
-        closingTime: '23:00',
+        openingTime: '00:00',
+        closingTime: '24:00',
         image: "https://img.freepik.com/premium-photo/mutton-biryani-food-photography_162831-2.jpg?w=2000",
         address: 'Padi',
         food: {
@@ -688,7 +688,6 @@ const mealDisplayText = document.querySelector('.mealDisplay');
 const blackbg = document.querySelector('.dummy');
 const replaceDisplay = document.querySelector('.replaceItems');
 const replaceBottom = document.querySelector('.replaceItemsDisplay');
-const replaceTop = document.querySelector('.dummy');
 const itemTotal = document.querySelector('.itemTotal');
 const withTaxes = document.querySelector('.withTaxes');
 const toPay = document.querySelector('.toPay');
@@ -716,7 +715,8 @@ function renderAllPages() {
         const time = new Date();
         var currtime = time.getHours() * 100 + time.getMinutes();
 
-        if (currtime > 0630 && currtime < 1200) {
+        if (currtime > 0000 && currtime < 1200) {
+            // if (currtime > 0630 && currtime < 1200) {  //for testing
             if (mealDisplayText) {
                 mealDisplayText.textContent = `Its BreakFast Time`;
             }
@@ -750,6 +750,7 @@ function renderAllPages() {
             renderHotels()
             viewCartDisplay()
             viewfullmenu[0].addEventListener('click', viewFullMenu);
+            search[0].addEventListener('keyup', renderHotels)
             break;
         }
         case '/index.html': { // dishes page route
@@ -757,12 +758,14 @@ function renderAllPages() {
             renderHotels()
             viewCartDisplay()
             viewfullmenu[0].addEventListener('click', viewFullMenu);
+            search[0].addEventListener('keyup', renderHotels)
             break;
         }
         case '/dishes.html': { // dishes page route
             meal();
             renderMenu();
             viewCartDisplay()
+            search[0].addEventListener('keyup', renderMenu);
             break;
         }
         case '/viewCart.html': { // dishes page route
@@ -803,28 +806,18 @@ function displaySearch() {
     console.log("no");
 }
 
-
 function renderHotels() {
 
-    search[0].addEventListener('keyup', renderHotels)
-
-    if (selectedItems) {
-        const restaurantId = selectedItems.hotelId;
-        hotelnamedisplay[0].textContent = `${hotels[restaurantId].name}`;
-    }
-
     const displayHotels = document.querySelector('.display');
+    const filteredHotels = findMatches(this.value, hotels)
 
-    const matchArray = findMatches(this.value, hotels)
-
-    displayHotels.innerHTML = matchArray.map(function (item, i) {
-        // displayHotels.innerHTML = hotels.map(function (item, i) {
+    displayHotels.innerHTML = filteredHotels.map(function (hotel, i) {
         return (`
         <a class="${isRestaurantDisabled(i) ? "enabled" : "disabled"}" href="http://127.0.0.1:5501/dishes.html?restaurant_id=${i}">
         <div class="dishes">
-            <div> <img src="${item.image}"></div>
+            <div> <img src="${hotel.image}"></div>
             <div class="dishesContent">
-            <p style="font-weight:bold;">${item.name}</p>
+            <p style="font-weight:bold;">${hotel.name}</p>
             <p class="rating">
             <span>✭ 4.3</span>
             <span>30mins</span>
@@ -854,62 +847,51 @@ function renderHotels() {
 
 function renderMenu() {
 
-
-    search[0].addEventListener('keyup', renderMenu);
-
-    const restaurantId = getRestaurantId();
+    const restaurantId = getRestaurantId() //for the menu page data-attributes
+    const nameofhotel = hotels[restaurantId].name; //for the menu page data-attributes
+    headerText.textContent = `${hotels[restaurantId].name}`; // heading at the menu page
     const displayHotelMenu = document.querySelector('.displaySubDishes')
-
-    headerText.textContent = `${hotels[restaurantId].name}`;
-    hotelnamedisplay[0].textContent = `${hotels[restaurantId].name}`;
-
-    if (restaurantId === null) {
-        return;
-    }
 
 
     const menu = [...hotels[restaurantId].food[whatIsTheMeal]];
+    const filteredMenu = findMatches(this.value, menu)
 
-    const nameofhotel = hotels[restaurantId].name;
-
-    const matchArray = findMatches(this.value, menu)
-
-    displayHotelMenu.innerHTML = matchArray.map(function (item, i) {
-        // displayHotelMenu.innerHTML = menu.map(function (item, i) {
+    displayHotelMenu.innerHTML = filteredMenu.map(function (menu, i) {
         return (
             `<div class="subDishes">
                 <div class="subDishesContent">
                 <img class="veg"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo0udcgXrAq5ORFAfi-EIkG3ZiXy3k9xcTZg&usqp=CAU">
-                <p style="font-size:17px;">${item.name}</p>
+                <p style="font-size:17px;">${menu.name}</p>
                 <p class="rating">
-                <span>₹${item.price}</span>
+                <span>₹${menu.price}</span>
                 </p>
                 </div>
 
                 <div>   
-                <img src="${item.image}">
+                <img src="${menu.image}">
                 <div class="add">
-                <div class="deleteItem ${(checkCart(nameofhotel, item.name)) > 0 ? " enableAddDelete" : ""}"
+
+                <div class="deleteItem ${(checkCart(nameofhotel, menu.name)) > 0 ? " enableAddDelete" : ""}"
                  data-nameofhotel="${nameofhotel}"
-                data-name="${item.name}" >‒</div>
+                data-name="${menu.name}" >‒</div>
                                                                                               
                 <div
                 data-nameofhotel="${nameofhotel}"
-                 data-name="${item.name}"
-                 data-img="${item.image}" 
-                 data-price="${item.price}"
-                 data-quantity ="${item.quantity}"
-                 data-restaurantid="${getRestaurantId()}"
-                 class= "noOfItems" >${checkCart(nameofhotel, item.name)} </div> 
+                 data-name="${menu.name}"
+                 data-img="${menu.image}" 
+                 data-price="${menu.price}"
+                 data-quantity ="${menu.quantity}"
+                 data-restaurantid="${restaurantId}"
+                 class= "noOfItems" >${checkCart(nameofhotel, menu.name)} </div> 
 
-                 <div class="addItem ${(checkCart(nameofhotel, item.name)) > 0 ? " enableAddDelete" : ""}" "
+                 <div class="addItem ${(checkCart(nameofhotel, menu.name)) > 0 ? " enableAddDelete" : ""}" "
                  data-nameofhotel="${nameofhotel}"
-                 data-name="${item.name}">+</div>
+                 data-name="${menu.name}">+</div>
                 </div>
                 </div>
                 </div>`
         )
-    }).join('');
+    }).join('');       // error in noOfItems class to be solved
 
 
     const noOfItem = document.querySelectorAll('.noOfItems');
@@ -931,10 +913,12 @@ function renderMenu() {
         let scroll = this.scrollY;
         //console.log(scroll)
         if (scroll < 4 && scroll < 80) {
-            //console.log("loop")
             topHeader[0].style.display = "none"
-        } else
+        } else {
+            hotelnamedisplay[0].textContent = `${hotels[restaurantId].name}`; //at the top of menu page
             topHeader[0].style.display = "flex"
+        }
+
     });
 
     function getRestaurantId() {
@@ -951,7 +935,7 @@ function renderMenu() {
     }
 
     function addToCart() {
-        tempStorage = {
+        tempStorage = {                                 //temp storage
             name: this.dataset.nameofhotel,
             hotelId: this.dataset.restaurantid,
             food: [{
@@ -963,8 +947,8 @@ function renderMenu() {
             }]
         };
 
-        if (!selectedItems) {
-            console.log('print')
+        if (!selectedItems) {                           //totally newlist
+            console.log('new list')
             selectedItems = {
                 name: this.dataset.nameofhotel,
                 hotelId: this.dataset.restaurantid,
@@ -972,7 +956,6 @@ function renderMenu() {
                     name: this.dataset.name,
                     price: parseInt(this.dataset.price),
                     img: this.dataset.img,
-                    //   quantity: this.dataset.quantity,
                     quantity: 1,
                     totalAmount: 0,
                 }]
@@ -980,40 +963,29 @@ function renderMenu() {
             localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
         }
 
-        if (selectedItems) {
-            if (selectedItems.name !== this.dataset.nameofhotel) {
-                console.log("sorry");
-                replaceDisplay.style.display = 'flex';
-                setTimeout(() => {
-                    blackbg.style.opacity = '1';
-                }, '400')
-                setTimeout(() => {
-                    replaceBottom.style.transform = "translateY(" + (0) + "px)";
-                }, '100')
-            }
+
+        if (selectedItems && selectedItems.name !== this.dataset.nameofhotel) {
+            console.log("for new list say yes or no");      // over write the present with new list
+            replaceDisplay.style.display = 'flex';
+            setTimeout(() => {
+                blackbg.style.opacity = '1';
+            }, '400')
+            setTimeout(() => {
+                replaceBottom.style.transform = "translateY(" + (0) + "px)";
+            }, '100')
         }
 
-        if (selectedItems.name === this.dataset.nameofhotel) {
-            if (selectedItems.name === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
-                for (let i = 0; i < selectedItems.food.length; i++) {
-                    if (selectedItems.food[i].name === this.dataset.name && selectedItems.food[i].quantity === "ADD") {
-                        selectedItems.food[i].quantity = 1;
-                        console.log(selectedItems)
-                        localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
-                    }
-                }
-            }
-            else {
-                selectedItems.food.push({
-                    quantity: 1,
-                    name: this.dataset.name,
-                    price: parseInt(this.dataset.price),
-                    img: this.dataset.img,
-                    totalAmount: 0,
-                })
-                console.log(selectedItems)
-                localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
-            }
+
+        if (selectedItems.name === this.dataset.nameofhotel) { //already hotel present then push the menu in existing list
+            selectedItems.food.push({
+                quantity: 1,
+                name: this.dataset.name,
+                price: parseInt(this.dataset.price),
+                img: this.dataset.img,
+                totalAmount: 0,
+            })
+            console.log(selectedItems)
+            localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
         }
         renderAllPages()
     }
@@ -1024,36 +996,36 @@ function renderCart() {
     const displaycart = document.querySelector('.displayCart');
     const nameofhotel = selectedItems.name;
 
-    displaycart.innerHTML = selectedItems.food.map(function (item, i) {
+    displaycart.innerHTML = selectedItems.food.map(function (food, i) {
         return (`
-        <div class="viewCart" style="display:${item.quantity >= 1 ? "nne" : "nne"};" >
+        <div class="viewCart" style="display:${food.quantity >= 1 ? "nne" : "nne"};" >
         <div class="subViewCart">
         <img class="veg"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo0udcgXrAq5ORFAfi-EIkG3ZiXy3k9xcTZg&usqp=CAU">
-        <p style="font-size:15px;">${item.name}</p>
+        <p style="font-size:15px;">${food.name}</p>
         </div>
 
         <div>   
         <div class="addCart">
-        <div class="deleteItem ${(checkCart(nameofhotel, item.name)) > 0 ? "enableAddDelete" : ""}"
+        <div class="deleteItem ${(checkCart(nameofhotel, food.name)) > 0 ? "enableAddDelete" : ""}"
          data-nameofhotel="${nameofhotel}"
-        data-name="${item.name}" >‒</div>
+        data-name="${food.name}" >‒</div>
 
         <div
         data-nameofhotel="${nameofhotel}"
-         data-name="${item.name}"
-         data-img="${item.image}" 
-         data-price="${item.price}"
-         ${addTotal(item.price * item.quantity)}
-         data-quantity ="${item.quantity}"
-         class= "noOfItems" >${checkCart(nameofhotel, item.name)} </div> 
+         data-name="${food.name}"
+         data-img="${food.image}" 
+         data-price="${food.price}"
+         ${addTotal(food.price * food.quantity)}
+         data-quantity ="${food.quantity}"
+         class= "noOfItems" >${checkCart(nameofhotel, food.name)} </div> 
 
-         <div class="addItem ${(checkCart(nameofhotel, item.name)) > 0 ? "enableAddDelete" : ""}" "
+         <div class="addItem ${(checkCart(nameofhotel, food.name)) > 0 ? "enableAddDelete" : ""}" "
          data-nameofhotel="${nameofhotel}"
-         data-name="${item.name}">+</div>
+         data-name="${food.name}">+</div>
         </div>
         </div>
 
-        <div  style="font-size:13px;"> ${(item.price) * (item.quantity)}₹</div>
+        <div  style="font-size:13px;"> ${(food.price) * (food.quantity)}₹</div>
 
         </div>`)
     }).join('')
@@ -1069,7 +1041,7 @@ function renderCart() {
         item.addEventListener('click', deleteItem)
     })
 
-    console.log(selectedItems);
+    console.log("Rendered cart", selectedItems);
 
     function addTotal(itemPrice) {
         b = b + itemPrice;
@@ -1081,71 +1053,44 @@ function renderCart() {
 
 }
 
-
-
 function checkCart(hotel, name) {
-    if (selectedItems && selectedItems.name === hotel && checkItem(name)) {
+    if (selectedItems && selectedItems.name === hotel) {
         for (let i = 0; i < selectedItems.food.length; i++) {
             if (selectedItems.food[i].name === name) {
-                if (selectedItems.food[i].quantity === 0) {
-                    selectedItems.food[i].quantity === "ADD"
-                    localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
-                    return "ADD"
-                }
+                // console.log("check cart")
                 return selectedItems.food[i].quantity
             }
         }
-    } else {
-        return "ADD"
-    }
+    } return "ADD"
 }
-
-function checkItem(name) {
-    for (let i = 0; i < selectedItems.food.length; i++) {
-        if (selectedItems.food[i].name === name) {
-            return true;
-        }
-    }
-}
-
 
 function addItem() {
-    if (selectedItems.name === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
+    if (selectedItems.name === this.dataset.nameofhotel) {
         for (let i = 0; i < selectedItems.food.length; i++) {
-            if (selectedItems.food[i].name === this.dataset.name && selectedItems.food[i].quantity > 0) {
+            if (selectedItems.food[i].name === this.dataset.name) {
                 selectedItems.food[i].quantity = selectedItems.food[i].quantity + 1;
-                console.log(selectedItems);
+                console.log("Added", selectedItems);
                 localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
             }
         }
     }
-    //b = 0
+    b = 0
     renderAllPages()
 }
 
 function deleteItem() {
-
-    if (selectedItems.name === this.dataset.nameofhotel && checkItem(this.dataset.name)) {
+    if (selectedItems.name === this.dataset.nameofhotel) {
         for (let i = 0; i < selectedItems.food.length; i++) {
-            if (selectedItems.food[i].name === this.dataset.name && selectedItems.food[i].quantity > 0) {
-
-                /**
-                 * quantity === 1
-                 * delete item from array
-                 * rerender
-                 */
-
+            if (selectedItems.food[i].name === this.dataset.name) {
                 if (selectedItems.food[i].quantity === 1) {
                     selectedItems.food.splice([i], 1);
                 } else {
                     selectedItems.food[i].quantity = selectedItems.food[i].quantity - 1;
                 }
-                localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
-
-                console.log("l", selectedItems)
             }
         }
-    }
+    } localStorage.setItem('selectedItems', JSON.stringify(selectedItems));
+    console.log("Deleted", selectedItems)
     b = 0;
     renderAllPages()
 }
@@ -1178,10 +1123,12 @@ function yesOrNo(yn) {
     }
 
 }
-
+//--till here
 function viewCartDisplay() {
 
     if (selectedItems && selectedItems.food.length) {
+        hotelnamedisplay[0].textContent = `${hotels[selectedItems.hotelId].name}`; // cart display bottom
+
         for (var i = 0; i < selectedItems.food.length; i++) {
             amount = selectedItems.food[i].quantity * selectedItems.food[i].price
             c = amount + c;
@@ -1209,9 +1156,21 @@ function viewCartDisplay() {
         setTimeout(() => {
             viewCartPopup.style.display = 'none'
         }, '300')
-        console.log("nothing")
+        console.log("nothing in the cart")
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //search // restaurant search main page //food search menu page
 //payment process
@@ -1221,6 +1180,7 @@ function viewCartDisplay() {
 
 //smallHeader to topHeader
 //searchHotel to search
+//gonna remove checkitem function
 
 //22 to 
 
