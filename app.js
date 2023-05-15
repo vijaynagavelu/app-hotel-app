@@ -1051,8 +1051,8 @@ function renderCart() {
         tempValue1 = tempValue1 + itemPrice;
         itemTotal.textContent = `₹${tempValue1}`;
         withTaxes.textContent = `₹${(tempValue1 * 0.09).toFixed(2)}`;
-        toPay.textContent = `₹${(tempValue1 + (tempValue1 * 0.09)).toFixed(2) - 50}`;
-        youSave.textContent = `You save ₹${80}`
+        toPay.textContent = `₹${(tempValue1 + (tempValue1 * 0.09) - 20).toFixed(2)}`;
+        youSave.textContent = `You save ₹${50}`
     }
 
 }
@@ -1164,17 +1164,6 @@ function viewCartDisplay() {
         console.log("nothing in the cart")
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 //payment process
