@@ -142,7 +142,7 @@ const hotels = [
         openingTime: '07:30',
         closingTime: '23:50',
         image: "https://images.livemint.com/img/2021/07/05/1200x900/crispy-dosa-temple-recipe_1625469413436_1625469443302.jpg",
-        address: 'AnnaNagar',
+        address: 'AnnaNagar East',
         food: {
             breakFast: [
                 {
