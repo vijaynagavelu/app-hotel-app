@@ -718,7 +718,7 @@ function renderAllPages() {
         const time = new Date();
         var currtime = time.getHours() * 100 + time.getMinutes();
 
-        if (currtime > 0000 && currtime < 1200) {
+        if (currtime > 630 && currtime < 1200) {
             // if (currtime > 0630 && currtime < 1200) {  //for testing
             if (mealDisplayText) {
                 mealDisplayText.textContent = `Its BreakFast Time`;
@@ -737,7 +737,7 @@ function renderAllPages() {
             }
             whatIsTheMeal = "dinner";
         } else {
-            return 'lunch';
+            return 'Currently Not Serving';
         }
     }
 
@@ -816,7 +816,7 @@ function renderHotels() {
 
     displayHotels.innerHTML = filteredHotels.map(function (hotel, i) {
         return (`
-        <a class="${isRestaurantDisabled(i) ? "enabled" : "disabled"}" href="http://127.0.0.1:5501/dishes.html?restaurant_id=${i}">
+        <a class="${isRestaurantDisabled(i) ? "enabled" : "disabled"}" href="dishes.html?restaurant_id=${i}">
         <div class="dishes">
             <div> <img src="${hotel.image}"></div>
             <div class="dishesContent">
