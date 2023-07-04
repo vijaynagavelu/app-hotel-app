@@ -743,7 +743,7 @@ function renderAllPages() {
 
     function viewFullMenu() {
         const restaurantId = selectedItems.hotelId;
-        location.href = `http://127.0.0.1:5501/dishes.html?restaurant_id=${restaurantId}`;
+        location.href = `dishes.html?restaurant_id=${restaurantId}`;
     }
 
     switch (pathName) {
