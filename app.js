@@ -773,6 +773,7 @@ function renderAllPages() {
         }
         case '/viewCart.html': { // dishes page route
             renderCart()
+            viewCartDisplay()
             viewfullmenu.addEventListener('click', viewFullMenu);
             break;
         }
@@ -1130,8 +1131,8 @@ function yesOrNo(yn) {
 
 function viewCartDisplay() {
 
-    console.log(selectedItems)
-    
+    console.log("view page",selectedItems)
+
     if (selectedItems && selectedItems.food.length) {
         hotelnamedisplay.textContent = `${hotels[selectedItems.hotelId].name}`; // cart display bottom
 
