@@ -744,6 +744,7 @@ function renderAllPages() {
     function viewFullMenu() {
         const restaurantId = selectedItems.hotelId;
         location.href = `/dishes.html?restaurant_id=${restaurantId}`;
+        // location.href = `/index.html`;
     }
 
     switch (pathName) {
@@ -773,7 +774,6 @@ function renderAllPages() {
         }
         case '/viewCart.html': { // dishes page route
             renderCart()
-            viewCartDisplay()
             viewfullmenu.addEventListener('click', viewFullMenu);
             break;
         }
