@@ -772,7 +772,7 @@ function renderAllPages() {
             search.addEventListener('keyup', renderMenu);
             break;
         }
-        case '/viewCart.html': { // dishes page route
+        case '/viewcart.html': { // dishes page route
             renderCart()
             viewfullmenu.addEventListener('click', viewFullMenu);
             break;
@@ -1005,7 +1005,7 @@ function renderCart() {
 
     displaycart.innerHTML = selectedItems.food.map(function (food, i) {
         return (`
-        <div class="viewCart" style="display:${food.quantity >= 1 ? "nne" : "nne"};" >
+        <div class="viewcart" style="display:${food.quantity >= 1 ? "nne" : "nne"};" >
         <div class="subViewCart">
         <img class="veg"  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTo0udcgXrAq5ORFAfi-EIkG3ZiXy3k9xcTZg&usqp=CAU">
         <p style="font-size:15px;">${food.foodName}</p>
