@@ -1130,6 +1130,8 @@ function yesOrNo(yn) {
 
 function viewCartDisplay() {
 
+    console.log(selectedItems)
+    
     if (selectedItems && selectedItems.food.length) {
         hotelnamedisplay.textContent = `${hotels[selectedItems.hotelId].name}`; // cart display bottom
 
