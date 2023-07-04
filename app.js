@@ -998,6 +998,8 @@ function renderMenu() {
 
 function renderCart() {
 
+    console.log("mo");
+
     const displaycart = document.querySelector('.displayCart');
     const nameofhotel = selectedItems.nameofhotel;
 
@@ -1131,7 +1133,6 @@ function yesOrNo(yn) {
 
 function viewCartDisplay() {
 
-    console.log("view page",selectedItems)
 
     if (selectedItems && selectedItems.food.length) {
         hotelnamedisplay.textContent = `${hotels[selectedItems.hotelId].name}`; // cart display bottom
