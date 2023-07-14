@@ -2,7 +2,7 @@ const hotels = [
     {
         name: 'SS Hyderabad',
         rating: '1.1',
-        openingTime: '00:00',
+        openingTime: '06:00',
         closingTime: '24:00',
         image: "https://img.freepik.com/premium-photo/mutton-biryani-food-photography_162831-2.jpg?w=2000",
         address: 'Padi',
@@ -737,7 +737,7 @@ function renderAllPages() {
             }
             whatIsTheMeal = "dinner";
         } else {
-            return 'Currently Not Serving';
+             mealDisplayText.textContent =  'Currently Not Serving';
         }
     }
 
